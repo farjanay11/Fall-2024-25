@@ -1,0 +1,94 @@
+o store multiple users in one session using PHP, you can utilize PHP's session management features. Sessions allow you to store data on the server for individual users, and you can use arrays to manage multiple users within a single session. Here’s a step-by-step guide on how to achieve this:
+
+Step 1: Start the Session
+
+At the beginning of your PHP script, you need to start the session using session_start().
+
+session_start();
+
+Step 2: Store Users in the Session
+
+You can create an array to hold user data and store it in the session. For example, let's assume you want to store usernames and their roles.
+
+// Start the session 
+session_start(); 
+ 
+// Check if the 'users' array is already set in the session 
+if (!isset($_SESSION['users'])) { 
+    $_SESSION['users'] = []; 
+} 
+ 
+// Add a new user to the session 
+$newUser = [ 
+    'username' => 'user1', 
+    'role' => 'admin' 
+]; 
+ 
+// Add the new user to the session array 
+$_SESSION['users'][] = $newUser; 
+Step 3: Accessing Stored Users
+
+To retrieve and display the users stored in the session, you can loop through the $_SESSION['users'] array.
+
+// Display all users stored in the session 
+foreach ($_SESSION['users'] as $user) { 
+    echo 'Username: ' . $user['username'] . ', Role: ' . $user['role'] . '<br>'; 
+} 
+Step 4: Removing a User
+
+If you need to remove a user from the session, you can do so by finding the user in the array and unsetting it.
+
+// Function to remove a user by username 
+function removeUser($username) { 
+    foreach ($_SESSION['users'] as $key => $user) { 
+        if ($user['username'] === $username) { 
+            unset($_SESSION['users'][$key]); 
+            break; 
+        } 
+    } 
+} 
+ 
+// Example: Remove user1 
+removeUser('user1'); 
+Complete Example
+
+Here’s a complete example that incorporates all the above steps:
+
+<?php 
+session_start(); 
+ 
+// Initialize the users array if not set 
+if (!isset($_SESSION['users'])) { 
+    $_SESSION['users'] = []; 
+} 
+ 
+// Function to add a user 
+function addUser($username, $role) { 
+    $_SESSION['users'][] = [ 
+        'username' => $username, 
+        'role' => $role 
+    ]; 
+} 
+ 
+// Function to remove a user 
+function removeUser($username) { 
+    foreach ($_SESSION['users'] as $key => $user) { 
+        if ($user['username'] === $username) { 
+            unset($_SESSION['users'][$key]); 
+            break; 
+        } 
+    } 
+} 
+ 
+// Add users 
+addUser('user1', 'admin'); 
+addUser('user2', 'editor'); 
+ 
+// Display all users 
+foreach ($_SESSION['users'] as $user) { 
+    echo 'Username: ' . $user['username'] . ', Role: ' . $user['role'] . '<br>'; 
+} 
+ 
+// Remove a user 
+removeUser('user1'); 
+?> 
